@@ -62,7 +62,7 @@ Use the exact nine names and the Week 10 risk-based selection. Check claims agai
 - **Risk level missing:** request classification; no silent default.
 - **Unrecognized dimension/status or malformed JSON:** helper stops with a descriptive error.
 - **Missing required check or empty/not-checked evidence:** helper returns `incomplete`, not artificial scores.
-- **Critical reviewer absent:** report missing reviewer record; a record's independence is self-attested and cannot be confirmed mechanically.
+- **Critical reviewer absent or incomplete:** report an incomplete evaluation. The helper expects non-empty `reviewer` and `notes` strings, `independent_attested` set to JSON `true`, and `decision` set to `approved` or `changes_requested`. Reviewer independence is self-attested.
 - **Safety concern:** flag for human response and avoid autonomous release decisions.
 
 ## Exact course evaluation dimensions

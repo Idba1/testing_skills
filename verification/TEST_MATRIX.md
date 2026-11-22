@@ -11,3 +11,5 @@
 | Nine-Dimension Output Evaluator | High-risk record completeness checks | Reject wrong labels/status; missing dimension flagged | Low sanity, medium 3, critical review record | **Automated tests + actual JSON execution** for structure only |
 
 **Clarifications:** The unit tests verify script behavior, not model-generated answers, business rule approval or system-under-test behavior. Hand-authored examples are intentionally not represented as run results.
+
+The regression tests cover adjacent exclusive integer bounds, requirements linked only to unrequested test kinds, malformed CSV rows and headers, explicit blank CSV references, workload overflow in inputs and calculated estimates, and evaluation fields with invalid JSON types.

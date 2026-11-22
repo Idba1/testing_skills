@@ -6,10 +6,18 @@ import math
 from pathlib import Path
 
 
+def _is_finite(value):
+    """Check whether a number fits in the finite float range."""
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        return False
+
+
 def _number(obj, key, *, positive=True, whole=False):
     value = obj.get(key)
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
-        raise ValueError(f"{key} must be a finite number")
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not _is_finite(value):
+        raise ValueError(f"{key} must be a finite number within the supported numeric range")
     if positive and value <= 0:
         raise ValueError(f"{key} must be > 0")
     if not positive and value < 0:
@@ -20,6 +28,7 @@ def _number(obj, key, *, positive=True, whole=False):
 
 
 def build(data):
+    """Calculate and validate a steady-state estimate from workload assumptions."""
     if not isinstance(data, dict):
         raise ValueError("input must be a JSON object")
     title = data.get("scenario")
@@ -33,15 +42,23 @@ def build(data):
     think_time = _number(data, "mean_think_time_seconds", positive=False)
     if think_time > duration:
         raise ValueError("mean_think_time_seconds cannot exceed mean_session_duration_seconds")
-    concurrency = arrivals / 60 * duration  # Little's Law: L = lambda * W
+    arrivals_per_second = arrivals / 60
+    concurrency = arrivals_per_second * duration  # Little's Law: L = lambda * W
+    derived = {
+        "session_arrivals_per_second": arrivals_per_second,
+        "mean_concurrent_sessions": concurrency,
+        "requests_per_minute": arrivals * requests,
+        "session_starts_in_peak_window": arrivals * peak_minutes,
+    }
+    for name, value in derived.items():
+        if not _is_finite(value):
+            raise ValueError(f"{name} exceeds the supported numeric range")
+    derived = {name: round(value, 4 if name == "session_arrivals_per_second" else 2)
+               for name, value in derived.items()}
     warnings = []
     if concurrency > population:
         warnings.append("Estimated mean concurrency exceeds declared user population; review assumptions/repeat sessions.")
-    return {"scenario": title, "assumptions": data, "derived": {
-        "session_arrivals_per_second": round(arrivals / 60, 4),
-        "mean_concurrent_sessions": round(concurrency, 2),
-        "requests_per_minute": round(arrivals * requests, 2),
-        "session_starts_in_peak_window": round(arrivals * peak_minutes, 2)},
+    return {"scenario": title, "assumptions": data, "derived": derived,
         "formula": "mean_concurrent_sessions = (peak_session_arrivals_per_minute / 60) * mean_session_duration_seconds",
         "warnings": warnings,
         "limitations": ["Steady-state mean estimate, NOT a capacity guarantee or percentile/maximum concurrency.",

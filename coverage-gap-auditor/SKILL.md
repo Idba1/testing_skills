@@ -55,7 +55,7 @@ JSON `summary`, per-requirement `status`, `required_kinds`, `found_kinds`, `miss
 Every result references existing input IDs; category names match expected types; no unknown requirement is treated as covered. Verify `covered + partial + uncovered = total`. Spot-check that linked cases genuinely test the scenario and assertion; especially inspect boundaries and combinations before approving conclusions.
 
 ## 7. Failure Handling
-- **Missing/incorrect CSV header:** stop with clear input error.
+- **Missing required CSV columns, duplicate column names, incorrect row widths, or CSV parser errors:** stop with a clear input error. Use an explicit empty field for a blank test requirement reference.
 - **Duplicate IDs, empty requirement text/test expected result, invalid kind:** stop with clear input error.
 - **Orphan or blank test requirement ID:** report separately; do not hide/drop silently.
 - **Unnumbered/missing criteria:** ask for IDs; do not infer acceptance criteria.

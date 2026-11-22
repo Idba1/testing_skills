@@ -15,6 +15,7 @@ def _int(value, name):
 
 
 def generate(data):
+    """Return sorted probes and their membership for each declared interval."""
     if not isinstance(data, dict) or not isinstance(data.get("requirements"), list) or not data["requirements"]:
         raise ValueError("'requirements' must be a non-empty list")
     items = []
@@ -35,13 +36,15 @@ def generate(data):
         ui = requirement.get("max_inclusive")
         if not isinstance(li, bool) or not isinstance(ui, bool):
             raise ValueError(f"{rid}: min_inclusive/max_inclusive must be booleans")
-        if lo == hi and not (li and ui):
+        first_allowed = lo if li else lo + 1
+        last_allowed = hi if ui else hi - 1
+        if first_allowed > last_allowed:
             raise ValueError(f"{rid}: no integer can satisfy the declared interval")
         # Step is a *probe distance*, not a claim that valid values are spaced this way.
         probes = sorted(set((lo - step, lo, lo + step, hi - step, hi, hi + step)))
         candidates = []
         for value in probes:
-            within = (value >= lo if li else value > lo) and (value <= hi if ui else value < hi)
+            within = first_allowed <= value <= last_allowed
             candidates.append({"value": value, "range_expected": "within_range" if within else "outside_range"})
         items.append({"requirement_id": rid, "declared_interval": {
             "minimum": lo, "maximum": hi, "min_inclusive": li, "max_inclusive": ui,

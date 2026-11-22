@@ -52,7 +52,8 @@ Verify physical units, positive finite inputs and mean concurrency arithmetic. C
 
 ## 7. Failure Handling
 - **Unknown rate/duration:** request the missing parameter, no fabricated fallback.
-- **Zero/negative/NaN/infinite values, noninteger population, invalid JSON:** stop with descriptive error.
+- **Negative, NaN or infinite values, zero for a field that must be positive, noninteger population, or invalid JSON:** stop with a descriptive error. Zero think time is allowed.
+- **Input or calculation outside the supported finite numeric range:** stop with an error that names the affected field or estimate.
 - **Think time larger than total session time:** stop for clarification.
 - **Population mismatch:** emit a warning; do not silently modify assumptions.
 - **Tool unavailable:** provide formula only; do not claim calculations were executed.

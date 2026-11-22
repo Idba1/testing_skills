@@ -55,5 +55,30 @@ class ValidatorTests(unittest.TestCase):
         self.assertIn("not output correctness or approval", r["advisory"])
 
 
+    def test_invalid_risk_and_dimension_status_types(self):
+        for value in ([], {}):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(ValueError, "risk_level"):
+                    module.validate({**evaluation(), "risk_level": value})
+                record = evaluation()
+                record["evaluations"]["Bias"]["status"] = value
+                with self.assertRaisesRegex(ValueError, "Bias"):
+                    module.validate(record)
+
+    def test_invalid_optional_check_types_are_incomplete(self):
+        low = evaluation("low")
+        low["sanity_check"] = {"status": [], "evidence": "Example"}
+        self.assertFalse(module.validate(low)["sanity_check_recorded"])
+        self.assertEqual(module.validate(low)["structural_status"], "incomplete")
+        critical = evaluation("critical")
+        critical["independent_human_review"] = {
+            "reviewer": "QA reviewer", "independent_attested": True,
+            "decision": {}, "notes": "Example",
+        }
+        result = module.validate(critical)
+        self.assertFalse(result["independent_human_review_recorded"])
+        self.assertEqual(result["structural_status"], "incomplete")
+
+
 if __name__ == "__main__":
     unittest.main()

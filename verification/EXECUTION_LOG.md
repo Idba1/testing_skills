@@ -1,5 +1,35 @@
 # Actual Execution Evidence
 
+## Regression verification on Windows
+
+On 2026-11-22, Python 3.13.2 on Windows ran `python -B verification/run_tests.py`. The original suite passed all 24 tests. With the eight new tests and before the fixes, the runner reported nine failing assertions and four errors, including subtests. A first rerun after the fixes had two failing workload subtests because their fixtures overflowed concurrency before reaching the intended metric. After isolating each calculation in its fixture, the final run passed all 32 tests.
+
+The in-memory syntax check compiled 10 Python files successfully.
+
+```powershell
+python -B -c "import pathlib; files = sorted(pathlib.Path('.').glob('**/*.py')); [compile(p.read_bytes(), str(p), 'exec') for p in files]; print(f'Compiled {len(files)} Python files')"
+```
+
+The sample verification invoked the following commands from repository root via Python subprocesses. Here `<temp>` represents the temporary directory created for the run.
+
+```text
+python -B test-case-generator/scripts/boundary_helper.py --input test-case-generator/examples/boundaries.json --output <temp>/generated_boundary_cases.json
+python -B coverage-gap-auditor/scripts/coverage_audit.py --requirements coverage-gap-auditor/examples/requirements.csv --tests coverage-gap-auditor/examples/tests.csv --output <temp>/coverage_report.json
+python -B workload-model-builder/scripts/workload_model.py --input workload-model-builder/examples/workload.json --output <temp>/workload_report.json
+python -B nine-dimension-output-evaluator/scripts/evaluation_validator.py --input nine-dimension-output-evaluator/examples/evaluation_input.json --output <temp>/evaluation_report.json
+```
+
+All four exited 0 and each parsed report equaled its checked-in sample. The same commands were repeated with the substitutions below and `bad-` prefixed to each output filename. All four exited 2, printed the expected input error to stderr, and created no report.
+
+| Replaced argument | Invalid input | Observed diagnostic |
+|---|---|---|
+| Boundary `--input <temp>/boundaries.json` | Requirement R1 with bounds 1 and 2, both exclusive | `R1: no integer can satisfy the declared interval` |
+| Coverage `--tests <temp>/tests.csv` | Missing final field on line 2 | `CSV line 2 has the wrong number of fields` |
+| Workload `--input <temp>/workload.json` | Arrivals per minute and mean duration both `1e308` | `mean_concurrent_sessions exceeds the supported numeric range` |
+| Evaluation `--input <temp>/evaluation_input.json` | Risk level set to `[]` | `risk_level must be low, medium, high, or critical` |
+
+## Original baseline verification on Linux
+
 **Execution date:** 2026-11-22 (conversation date)  
 **Environment in execution sandbox:** Python 3.13.5, Linux 6.18.57  
 **Dependencies:** Python standard library; no external service or system-under-test.

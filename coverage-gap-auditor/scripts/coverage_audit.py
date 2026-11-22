@@ -12,15 +12,27 @@ KINDS = {"positive", "negative", "boundary"}
 
 
 def _read_csv(path, required):
+    """Read a headered CSV and reject ambiguous headers or malformed records."""
     with Path(path).open(encoding="utf-8-sig", newline="") as file:
-        reader = csv.DictReader(file)
-        if reader.fieldnames is None or not required.issubset(set(reader.fieldnames)):
-            raise ValueError(f"{path}: required columns: {', '.join(sorted(required))}")
-        return [{key: (val or "").strip() for key, val in row.items() if key is not None}
-                for row in reader]
+        reader = csv.DictReader(file, strict=True)
+        try:
+            headers = reader.fieldnames
+            if headers is None or not required.issubset(headers):
+                raise ValueError(f"{path}: required CSV columns: {', '.join(sorted(required))}")
+            if len(headers) != len(set(headers)):
+                raise ValueError(f"{path}: duplicate CSV column names")
+            rows = []
+            for row in reader:
+                if None in row or None in row.values():
+                    raise ValueError(f"{path}: CSV line {reader.line_num} has the wrong number of fields")
+                rows.append({key: value.strip() for key, value in row.items()})
+        except csv.Error as exc:
+            raise ValueError(f"{path}: malformed CSV near line {reader.line_num}: {exc}") from exc
+    return rows
 
 
 def audit(requirements, tests):
+    """Compare declared kinds and retain all linked test IDs for review."""
     if not requirements:
         raise ValueError("at least one requirement is needed")
     req_index = {}
@@ -52,7 +64,13 @@ def audit(requirements, tests):
     entries, totals = [], {"covered": 0, "partial": 0, "uncovered": 0}
     for row in req_index.values():
         missing = row["required_kinds"] - row["found_kinds"]
-        status = "covered" if not missing else "partial" if row["found_kinds"] else "uncovered"
+        matched = row["required_kinds"] & row["found_kinds"]
+        if not missing:
+            status = "covered"
+        elif matched:
+            status = "partial"
+        else:
+            status = "uncovered"
         totals[status] += 1
         entries.append({"requirement_id": row["requirement_id"], "status": status,
                         "required_kinds": sorted(row["required_kinds"]),

@@ -52,5 +52,32 @@ class CoverageTests(unittest.TestCase):
                 module._read_csv(f, {"requirement_id"})
 
 
+    def test_only_unrequested_kind_is_uncovered(self):
+        report = module.audit([req("A")], [test("T1", "A", "boundary")])
+        row = report["requirements"][0]
+        self.assertEqual(row["status"], "uncovered")
+        self.assertEqual(row["linked_test_ids"], ["T1"])
+        self.assertEqual(row["missing_kinds"], ["negative", "positive"])
+        self.assertEqual(report["summary"]["uncovered"], 1)
+
+    def test_malformed_csv_records(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "bad.csv"
+            for contents in ("id,id\nA,B\n", "id,text\nA\n",
+                             "id,text\nA,B,C\n", 'id,text\nA,"open\n'):
+                with self.subTest(contents=contents):
+                    path.write_text(contents, encoding="utf-8")
+                    with self.assertRaisesRegex(ValueError, "CSV"):
+                        module._read_csv(path, {"id"})
+
+    def test_explicit_blank_csv_reference_is_unlinked(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "tests.csv"
+            path.write_text("test_id,requirement_id,kind,expected_result\n"
+                            "T1,,positive,Expected outcome\n", encoding="utf-8")
+            rows = module._read_csv(path, {"test_id", "requirement_id", "kind", "expected_result"})
+            self.assertEqual(module.audit([req("A")], rows)["unlinked_tests"], ["T1"])
+
+
 if __name__ == "__main__":
     unittest.main()

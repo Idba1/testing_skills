@@ -42,5 +42,23 @@ class WorkloadTests(unittest.TestCase):
         with self.assertRaises(ValueError): module.build(d)
 
 
+    def test_integer_outside_supported_float_range(self):
+        with self.assertRaisesRegex(ValueError, "peak_session_arrivals_per_minute"):
+            module.build({**sample(), "peak_session_arrivals_per_minute": 10**400})
+
+    def test_derived_overflow_from_finite_inputs(self):
+        base = {**sample(), "peak_session_arrivals_per_minute": 1e308,
+                "mean_session_duration_seconds": 60,
+                "mean_requests_per_session": 1, "peak_window_minutes": 1}
+        for field, metric in (
+            ("mean_session_duration_seconds", "mean_concurrent_sessions"),
+            ("mean_requests_per_session", "requests_per_minute"),
+            ("peak_window_minutes", "session_starts_in_peak_window"),
+        ):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, metric):
+                    module.build({**base, field: 1e308})
+
+
 if __name__ == "__main__":
     unittest.main()

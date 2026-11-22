@@ -51,5 +51,12 @@ class BoundaryTests(unittest.TestCase):
         self.assertEqual(r["requirements"][0]["candidate_values"][0]["value"], -10)
 
 
+    def test_adjacent_exclusive_bounds_are_empty(self):
+        requirement = {"id": "R1", "minimum": 1, "maximum": 2,
+                       "min_inclusive": False, "max_inclusive": False}
+        with self.assertRaisesRegex(ValueError, "no integer"):
+            module.generate({"requirements": [requirement]})
+
+
 if __name__ == "__main__":
     unittest.main()

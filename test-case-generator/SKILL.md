@@ -50,7 +50,7 @@ python test-case-generator/scripts/boundary_helper.py \
   --output test-case-generator/examples/generated_boundary_cases.json
 ```
 
-The JSON schema requires `requirements` as a non-empty list of unique IDs with `minimum`, `maximum` (integers), Boolean `min_inclusive`/`max_inclusive`, optional positive integer `step` (probe distance). It returns `range_expected: within_range|outside_range`; **not real application pass/fail**.
+The JSON schema requires `requirements` as a non-empty list of objects. Each object has a unique non-empty string `id`, integer `minimum` and `maximum`, Boolean `min_inclusive` and `max_inclusive`, and an optional positive integer `step` (probe distance, default 1). Each interval must contain at least one integer. The helper reports each probe's range membership as `within_range` or `outside_range` in `range_expected`.
 
 ## 5. Output
 A traceable test case table with `test_id | requirement_id | type | preconditions | action/data | source-backed expected result | evidence | unresolved issues`; and optional range-probe JSON. See the Markdown illustration and actual generated JSON in `examples/`.

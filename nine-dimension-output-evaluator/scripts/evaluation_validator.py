@@ -11,10 +11,11 @@ DIMENSIONS = ("Correctness", "Completeness", "Relevance", "Consistency", "Halluc
               "Bias", "Security", "Maintainability", "Traceability")
 REQUIRED = {"low": (), "medium": ("Correctness", "Completeness", "Traceability"),
             "high": DIMENSIONS, "critical": DIMENSIONS}
-STATES = {"pass", "concern", "not_checked"}
+STATES = ("pass", "concern", "not_checked")
 
 
 def validate(data):
+    """Validate core fields and report missing or incomplete review evidence."""
     if not isinstance(data, dict):
         raise ValueError("input must be a JSON object")
     artifact = data.get("artifact_id")
@@ -22,7 +23,7 @@ def validate(data):
     evaluations = data.get("evaluations")
     if not isinstance(artifact, str) or not artifact.strip():
         raise ValueError("artifact_id must be a non-empty string")
-    if risk not in REQUIRED:
+    if not isinstance(risk, str) or risk not in REQUIRED:
         raise ValueError("risk_level must be low, medium, high, or critical")
     if not isinstance(evaluations, dict):
         raise ValueError("evaluations must be an object")
@@ -41,12 +42,12 @@ def validate(data):
     sanity_ok = True
     if risk == "low":
         sanity = data.get("sanity_check")
-        sanity_ok = (isinstance(sanity, dict) and sanity.get("status") in {"pass", "concern"}
+        sanity_ok = (isinstance(sanity, dict) and sanity.get("status") in ("pass", "concern")
                      and isinstance(sanity.get("evidence"), str) and bool(sanity["evidence"].strip()))
     reviewer = data.get("independent_human_review")
     reviewer_recorded = (isinstance(reviewer, dict)
         and isinstance(reviewer.get("reviewer"), str) and bool(reviewer["reviewer"].strip())
-        and reviewer.get("decision") in {"approved", "changes_requested"}
+        and reviewer.get("decision") in ("approved", "changes_requested")
         and reviewer.get("independent_attested") is True
         and isinstance(reviewer.get("notes"), str) and bool(reviewer["notes"].strip()))
     review_missing = risk == "critical" and not reviewer_recorded
