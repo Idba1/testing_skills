@@ -1,0 +1,30 @@
+{
+  "artifact_id": "TC-PAYMENT-001 (illustrative review record)",
+  "risk_level": "high",
+  "required_dimensions": [
+    "Correctness",
+    "Completeness",
+    "Relevance",
+    "Consistency",
+    "Hallucination",
+    "Bias",
+    "Security",
+    "Maintainability",
+    "Traceability"
+  ],
+  "missing_dimensions": [],
+  "incomplete_dimension_evidence": [
+    "Correctness",
+    "Hallucination",
+    "Security"
+  ],
+  "concern_dimensions": [
+    "Bias",
+    "Completeness",
+    "Traceability"
+  ],
+  "sanity_check_recorded": null,
+  "independent_human_review_recorded": null,
+  "structural_status": "incomplete",
+  "advisory": "Structural completeness is not output correctness or approval. Human evidence checks are essential; recorded reviewer independence is self-attested, not verified."
+}

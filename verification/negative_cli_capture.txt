@@ -1,0 +1,4 @@
+boundary: exit 2: Input error: R1: min_inclusive/max_inclusive must be booleans
+workload: exit 2: Input error: peak_session_arrivals_per_minute must be > 0
+evaluator: exit 2: Input error: risk_level must be low, medium, high, or critical
+coverage: exit 2: Input error: /tmp/tmpqax_b45q/bad_requirements.csv: required columns: required_kinds, requirement_id, requirement_text

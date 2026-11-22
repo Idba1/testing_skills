@@ -1,0 +1,73 @@
+{
+  "audit_type": "declared_test_type_presence",
+  "summary": {
+    "total_requirements": 3,
+    "covered": 1,
+    "partial": 1,
+    "uncovered": 1,
+    "orphan_test_count": 1,
+    "unlinked_test_count": 1
+  },
+  "requirements": [
+    {
+      "requirement_id": "LOGIN-01",
+      "status": "covered",
+      "required_kinds": [
+        "negative",
+        "positive"
+      ],
+      "found_kinds": [
+        "negative",
+        "positive"
+      ],
+      "missing_kinds": [],
+      "linked_test_ids": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "requirement_id": "LOGIN-02",
+      "status": "partial",
+      "required_kinds": [
+        "boundary",
+        "negative",
+        "positive"
+      ],
+      "found_kinds": [
+        "negative"
+      ],
+      "missing_kinds": [
+        "boundary",
+        "positive"
+      ],
+      "linked_test_ids": [
+        "TC-003"
+      ]
+    },
+    {
+      "requirement_id": "LOGIN-03",
+      "status": "uncovered",
+      "required_kinds": [
+        "boundary",
+        "positive"
+      ],
+      "found_kinds": [],
+      "missing_kinds": [
+        "boundary",
+        "positive"
+      ],
+      "linked_test_ids": []
+    }
+  ],
+  "orphan_tests": [
+    {
+      "test_id": "TC-004",
+      "unknown_requirement_id": "UNKNOWN-99"
+    }
+  ],
+  "unlinked_tests": [
+    "TC-005"
+  ],
+  "limitation": "Declared test type presence is not semantic coverage, test execution, or effectiveness. Human review of scenarios, boundaries and assertions is required."
+}

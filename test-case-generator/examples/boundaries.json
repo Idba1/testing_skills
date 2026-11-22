@@ -1,0 +1,20 @@
+{
+  "requirements": [
+    {
+      "id": "REG-01",
+      "minimum": 18,
+      "maximum": 65,
+      "min_inclusive": true,
+      "max_inclusive": true,
+      "step": 1
+    },
+    {
+      "id": "CART-02",
+      "minimum": 0,
+      "maximum": 10,
+      "min_inclusive": false,
+      "max_inclusive": true,
+      "step": 1
+    }
+  ]
+}

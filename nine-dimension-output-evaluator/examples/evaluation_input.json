@@ -1,0 +1,15 @@
+{
+  "artifact_id": "TC-PAYMENT-001 (illustrative review record)",
+  "risk_level": "high",
+  "evaluations": {
+    "Correctness": {"status": "not_checked", "evidence": "Requires comparison with specification and execution"},
+    "Completeness": {"status": "concern", "evidence": "Boundary scenario not recorded in illustrative review"},
+    "Relevance": {"status": "pass", "evidence": "Example scenario is focused on payment test artifacts"},
+    "Consistency": {"status": "pass", "evidence": "Example uses the same terms for status and expected result"},
+    "Hallucination": {"status": "not_checked", "evidence": "API schema not provided for verification"},
+    "Bias": {"status": "concern", "evidence": "Only card payments represented in the example"},
+    "Security": {"status": "not_checked", "evidence": "Security review has not been executed"},
+    "Maintainability": {"status": "pass", "evidence": "Illustrative test identifiers follow a stable naming convention"},
+    "Traceability": {"status": "concern", "evidence": "Original payment acceptance criteria not attached"}
+  }
+}

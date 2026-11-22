@@ -1,0 +1,9 @@
+{
+  "scenario": "Illustrative login service peak period",
+  "population_users": 5000,
+  "peak_session_arrivals_per_minute": 120,
+  "mean_session_duration_seconds": 180,
+  "mean_requests_per_session": 6,
+  "mean_think_time_seconds": 8,
+  "peak_window_minutes": 30
+}

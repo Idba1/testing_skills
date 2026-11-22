@@ -1,0 +1,78 @@
+{
+  "analysis_type": "integer_range_probes",
+  "requirements": [
+    {
+      "requirement_id": "REG-01",
+      "declared_interval": {
+        "minimum": 18,
+        "maximum": 65,
+        "min_inclusive": true,
+        "max_inclusive": true,
+        "probe_distance": 1
+      },
+      "candidate_values": [
+        {
+          "value": 17,
+          "range_expected": "outside_range"
+        },
+        {
+          "value": 18,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 19,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 64,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 65,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 66,
+          "range_expected": "outside_range"
+        }
+      ]
+    },
+    {
+      "requirement_id": "CART-02",
+      "declared_interval": {
+        "minimum": 0,
+        "maximum": 10,
+        "min_inclusive": false,
+        "max_inclusive": true,
+        "probe_distance": 1
+      },
+      "candidate_values": [
+        {
+          "value": -1,
+          "range_expected": "outside_range"
+        },
+        {
+          "value": 0,
+          "range_expected": "outside_range"
+        },
+        {
+          "value": 1,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 9,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 10,
+          "range_expected": "within_range"
+        },
+        {
+          "value": 11,
+          "range_expected": "outside_range"
+        }
+      ]
+    }
+  ],
+  "limitation": "Range membership only; actual acceptance, other constraints and expected UI/API responses require requirement review."
+}

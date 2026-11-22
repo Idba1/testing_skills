@@ -1,0 +1,26 @@
+{
+  "scenario": "Illustrative login service peak period",
+  "assumptions": {
+    "scenario": "Illustrative login service peak period",
+    "population_users": 5000,
+    "peak_session_arrivals_per_minute": 120,
+    "mean_session_duration_seconds": 180,
+    "mean_requests_per_session": 6,
+    "mean_think_time_seconds": 8,
+    "peak_window_minutes": 30
+  },
+  "derived": {
+    "session_arrivals_per_second": 2.0,
+    "mean_concurrent_sessions": 360.0,
+    "requests_per_minute": 720,
+    "session_starts_in_peak_window": 3600
+  },
+  "formula": "mean_concurrent_sessions = (peak_session_arrivals_per_minute / 60) * mean_session_duration_seconds",
+  "warnings": [],
+  "limitations": [
+    "Steady-state mean estimate, NOT a capacity guarantee or percentile/maximum concurrency.",
+    "Requests-per-minute assumes mean requests per session over arrivals; does not model bursts or time-varying behavior.",
+    "Think time is reported as an assumption, not added again to session duration.",
+    "Peak-window session starts are not unique users; population is a context/consistency check."
+  ]
+}

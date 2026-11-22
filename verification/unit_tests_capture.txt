@@ -1,0 +1,29 @@
+test_custom_probe_distance_not_claimed_as_valid_step (test_boundary_helper.BoundaryTests.test_custom_probe_distance_not_claimed_as_valid_step) ... ok
+test_equal_inclusive_bounds (test_boundary_helper.BoundaryTests.test_equal_inclusive_bounds) ... ok
+test_exclusive_bounds (test_boundary_helper.BoundaryTests.test_exclusive_bounds) ... ok
+test_inclusive_bounds (test_boundary_helper.BoundaryTests.test_inclusive_bounds) ... ok
+test_invalid_duplicate_and_exclusive_equal (test_boundary_helper.BoundaryTests.test_invalid_duplicate_and_exclusive_equal) ... ok
+test_invalid_empty_and_bool (test_boundary_helper.BoundaryTests.test_invalid_empty_and_bool) ... ok
+test_covered_partial_uncovered (test_coverage_audit.CoverageTests.test_covered_partial_uncovered) ... ok
+test_csv_schema_error (test_coverage_audit.CoverageTests.test_csv_schema_error) ... ok
+test_duplicate_ids (test_coverage_audit.CoverageTests.test_duplicate_ids) ... ok
+test_missing_reqs_and_unknown_kind (test_coverage_audit.CoverageTests.test_missing_reqs_and_unknown_kind) ... ok
+test_orphan_and_unlinked (test_coverage_audit.CoverageTests.test_orphan_and_unlinked) ... ok
+test_unknown_requirement_kinds (test_coverage_audit.CoverageTests.test_unknown_requirement_kinds) ... ok
+test_invalid_thinktime (test_workload_model.WorkloadTests.test_invalid_thinktime) ... ok
+test_littles_law (test_workload_model.WorkloadTests.test_littles_law) ... ok
+test_missing_zero_or_boolean_invalid (test_workload_model.WorkloadTests.test_missing_zero_or_boolean_invalid) ... ok
+test_nonfinite (test_workload_model.WorkloadTests.test_nonfinite) ... ok
+test_population_warning (test_workload_model.WorkloadTests.test_population_warning) ... ok
+test_concern_recorded_without_approval (test_evaluation_validator.ValidatorTests.test_concern_recorded_without_approval) ... ok
+test_critical_requires_review_record (test_evaluation_validator.ValidatorTests.test_critical_requires_review_record) ... ok
+test_high_complete (test_evaluation_validator.ValidatorTests.test_high_complete) ... ok
+test_high_missing_is_incomplete (test_evaluation_validator.ValidatorTests.test_high_missing_is_incomplete) ... ok
+test_low_requires_sanity (test_evaluation_validator.ValidatorTests.test_low_requires_sanity) ... ok
+test_medium_three_dimensions (test_evaluation_validator.ValidatorTests.test_medium_three_dimensions) ... ok
+test_status_evidence_and_name_validation (test_evaluation_validator.ValidatorTests.test_status_evidence_and_name_validation) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.002s
+
+OK

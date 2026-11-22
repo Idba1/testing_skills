@@ -1,0 +1,4 @@
+requirement_id,requirement_text,required_kinds
+LOGIN-01,Valid credentials allow sign-in,positive|negative
+LOGIN-02,Account lockout threshold is enforced,positive|negative|boundary
+LOGIN-03,Reset link has an expiry limit,positive|boundary

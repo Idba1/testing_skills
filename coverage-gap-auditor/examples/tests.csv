@@ -1,0 +1,6 @@
+test_id,requirement_id,kind,expected_result
+TC-001,LOGIN-01,positive,Valid sign-in succeeds
+TC-002,LOGIN-01,negative,Invalid password is rejected
+TC-003,LOGIN-02,negative,Lockout condition is enforced
+TC-004,UNKNOWN-99,positive,Orphan test for review
+TC-005,,boundary,Missing traceability reference
